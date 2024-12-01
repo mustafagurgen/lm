@@ -1,0 +1,33 @@
+{
+  "name": "library_management",
+  "version": "1.0.0",
+  "description": "Library Management",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mustafagurgen/lm.git"
+  },
+  "keywords": [
+    "library",
+    "management"
+  ],
+  "author": "Mustafa Gurgen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mustafagurgen/lm/issues"
+  },
+  "homepage": "https://github.com/mustafagurgen/lm#readme",
+  "devDependencies": {
+    "prisma": "^6.0.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.0.0",
+    "body-parser": "^1.20.3",
+    "express": "^4.21.1",
+    "express-validator": "^7.2.0",
+    "moment": "^2.30.1"
+  }
+}

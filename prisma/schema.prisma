@@ -1,0 +1,104 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id        Int     @id @default(autoincrement())
+
+  firstname  String?
+  lastname   String?
+  email      String  @unique
+  password   String?
+
+  roles     UserRole[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
+
+  scores Score[]
+  books Book[]
+  borrows Borrow[]
+
+  @@map("users")
+}
+
+model UserRole {
+  userId  Int
+  roleId  Int
+
+  user     User  @relation(fields: [userId], references: [id])
+  role     Role @relation(fields: [roleId], references: [id])
+
+  @@id([userId,roleId])
+}
+
+
+model Role {
+  id          Int     @id @default(autoincrement())
+  title       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  rel UserRole[]
+
+  @@map("roles")
+}
+
+model Score {
+  id              Int     @id @default(autoincrement())
+  userId          Int
+  bookId          Int
+  borrowId        Int
+  userScore       Float
+  user            User   @relation(fields: [userId], references: [id])
+  book            Book   @relation(fields: [bookId], references: [id])
+  borrow          Borrow @relation(fields: [borrowId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("scores")
+}
+
+model Borrow {
+  id              Int     @id @default(autoincrement())
+  userId          Int
+  bookId          Int
+  user            User   @relation(fields: [userId], references: [id])
+  book            Book   @relation(fields: [bookId], references: [id])
+  returnedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  scores Score[]
+  @@map("borrows")
+}
+
+model Book {
+  id              Int     @id @default(autoincrement())
+  bookStatus      Int @default(1) // 1:Avaliable, 2:Borrowed, 3:Lost
+  bookName          String
+  bookDescription   String?
+  bookAuthor        String?
+  bookPublisher     String?
+
+  userId          Int?
+  user            User?   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  scores  Score[]
+  borrows Borrow[]
+
+  @@map("books")
+
+}
